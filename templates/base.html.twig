@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}{% endblock %} - LaboSymfo</title>
+        <title>{% block title %}{% endblock %} - SymfoCorps</title>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
@@ -10,6 +10,8 @@
     <body>
 
         {% include '_includes/header.html.twig' %}
+
+        {% include '_includes/flash.html.twig' %}
 
         {% block body %}{% endblock %}
 

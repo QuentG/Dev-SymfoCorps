@@ -39,6 +39,16 @@ class User implements UserInterface
      */
     private string $password = "";
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $confirmationToken = null;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default":"0"})
+     */
+    private bool $isVerified = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -63,7 +73,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
     /**
@@ -109,4 +119,28 @@ class User implements UserInterface
      * @see UserInterface
      */
     public function eraseCredentials(): void {}
+
+    public function getConfirmationToken(): ?string
+    {
+        return $this->confirmationToken;
+    }
+
+    public function setConfirmationToken(?string $confirmationToken): self
+    {
+        $this->confirmationToken = $confirmationToken;
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
 }

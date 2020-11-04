@@ -27,3 +27,9 @@ services:
       - MYSQL_PASSWORD=devpassword
     ports:
       - "3306:3306"
+
+  mail:
+    image: mailhog/mailhog:latest
+    ports:
+      - "1025:1025"
+      - "8025:8025"

@@ -24,7 +24,8 @@ class AppFixtures extends Fixture
             $user = (new User())
                 ->setEmail(sprintf('test%s@test.com', $u));
 
-            $user->setPassword($this->encoder->encodePassword($user, self::PASSWORD));
+            $user->setPassword($this->encoder->encodePassword($user, self::PASSWORD))
+                ->setIsVerified(true);
 
             $manager->persist($user);
         }

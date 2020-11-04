@@ -15,13 +15,16 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             {% if not app.user %}
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link" href="{{ path('app_registration_choices') }}">Inscription</a>#}
-{#                </li>#}
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>#}
-{#                </li>#}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_register') }}">Inscription</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+                </li>
             {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
+                </li>
             {% endif %}
             <li class="nav-item dropdown">
             </li>
