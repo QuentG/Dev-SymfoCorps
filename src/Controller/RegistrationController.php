@@ -19,6 +19,13 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class RegistrationController extends AbstractController
 {
+    private EntityManagerInterface $manager;
+
+    public function __construct(EntityManagerInterface $manager)
+    {
+        $this->manager = $manager;
+    }
+
     /**
      * @Route("", name="")
      *
@@ -27,7 +34,6 @@ class RegistrationController extends AbstractController
     public function register
     (
         Request $request,
-        EntityManagerInterface $manager,
         UserPasswordEncoderInterface $passwordEncoder,
         Mailer $mailer,
         TokenGenerator $tokenGenerator
@@ -47,8 +53,8 @@ class RegistrationController extends AbstractController
 
             $user->setConfirmationToken($tokenGenerator->generate());
 
-            $manager->persist($user);
-            $manager->flush();
+            $this->manager->persist($user);
+            $this->manager->flush();
 
             $email = $mailer->buildEmail(
                 "SymfoCorps | Confirmation de compte",
@@ -73,10 +79,37 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/check", name="_check")
+     * @Route("/check/{id<\d+>}", name="_check")
      */
-    public function check()
+    public function check(User $user, Request $request): RedirectResponse
     {
+        $token = $request->get('token');
+        if (empty($token) || $token !== $user->getConfirmationToken()) {
+            $this->addFlash(
+                'danger',
+                'Votre token n\'est pas valide'
+            );
+            return $this->redirectToRoute('app_login');
+        }
 
+        if ($user->getCreatedAt() < new \DateTime(User::TOKEN_VALIDITY)) {
+            $this->addFlash(
+                'danger',
+                'Votre token est expiré'
+            );
+            return $this->redirectToRoute('app_login');
+        }
+
+        $user->setConfirmationToken(null)
+            ->setIsVerified(true);
+
+        $this->manager->flush();
+
+        $this->addFlash(
+            'success',
+            'Votre compte a été validé'
+        );
+
+        return $this->redirectToRoute('app_login');
     }
 }
