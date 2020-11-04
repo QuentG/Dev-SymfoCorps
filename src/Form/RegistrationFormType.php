@@ -6,6 +6,7 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,9 +23,16 @@ class RegistrationFormType extends AbstractType
             ->add('email', TextType::class, [
                 'label' => 'Adresse mail'
             ])
-            ->add('plainPassword', PasswordType::class, [
-                'label' => 'Mot de passe',
+            ->add('plainPassword', RepeatedType::class, [
+                'type' => PasswordType::class,
                 'mapped' => false,
+                'first_options'  => [
+                    'label' => 'Mot de passe'
+                ],
+                'second_options' => [
+                    'label' => 'Confirmation de mot de passe'
+                ],
+                'invalid_message' => 'Vos mots de passe ne correspondent pas',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',

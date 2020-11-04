@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\UserCreatedEvent;
 use App\Form\RegistrationFormType;
 use App\Service\Mailer;
 use App\Service\TokenGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +19,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 /**
  * @Route("/register", name="app_register")
  */
-class RegistrationController extends AbstractController
+final class RegistrationController extends AbstractController
 {
     private EntityManagerInterface $manager;
 
@@ -35,8 +37,8 @@ class RegistrationController extends AbstractController
     (
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
-        Mailer $mailer,
-        TokenGenerator $tokenGenerator
+        TokenGenerator $tokenGenerator,
+        EventDispatcherInterface $dispatcher
     )
     {
         $user = new User();
@@ -56,14 +58,7 @@ class RegistrationController extends AbstractController
             $this->manager->persist($user);
             $this->manager->flush();
 
-            $email = $mailer->buildEmail(
-                "SymfoCorps | Confirmation de compte",
-                $user->getEmail(),
-                'emails/register.html.twig',
-                ['user' => $user]
-            );
-
-            $mailer->send($email);
+            $dispatcher->dispatch(new UserCreatedEvent($user));
 
             $this->addFlash(
                 'success',
