@@ -5,5 +5,10 @@
 {% block body %}
     <div class="container">
         <h2 class="py-5">HOMEPAGE</h2>
+        <div class="row">
+            {% for offer in offers %}
+                {% include 'offer/_offer.html.twig' %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

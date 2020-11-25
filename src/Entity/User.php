@@ -10,14 +10,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"particular"="Particular", "company"="Company"})
  * @UniqueEntity(
  *     fields={"email"},
  *     message="Email déjà utlisé"
  * )
  */
-class User implements UserInterface
+abstract class User implements UserInterface
 {
     public const TOKEN_VALIDITY = "-4 hours";
+
+    public static array $roles = [Company::ROLE, Particular::ROLE];
 
     use TimestampableTrait;
 
@@ -26,38 +31,43 @@ class User implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id = null;
+    protected ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private string $email = "";
-
-    /**
-     * @ORM\Column(type="json")
-     */
-    private array $roles = [];
+    protected string $email = "";
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private string $password = "";
+    protected string $password = "";
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $confirmationToken = null;
+    protected ?string $confirmationToken = null;
 
     /**
      * @ORM\Column(type="boolean", options={"default":"0"})
      */
-    private bool $isVerified = false;
+    protected bool $isVerified = false;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $resetPasswordToken = null;
+    protected ?string $resetPasswordToken = null;
+
+    public function isCompany(): bool
+    {
+        return $this instanceof Company;
+    }
+
+    public function isParticular(): bool
+    {
+        return $this instanceof Particular;
+    }
 
     public function getId(): ?int
     {
@@ -86,24 +96,7 @@ class User implements UserInterface
         return $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
+    abstract public function getRoles(): array;
 
     /**
      * @see UserInterface

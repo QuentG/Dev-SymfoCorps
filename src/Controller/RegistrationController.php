@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Company;
+use App\Entity\Particular;
 use App\Entity\User;
 use App\Event\UserCreatedEvent;
 use App\Form\RegistrationFormType;
-use App\Service\Mailer;
 use App\Service\TokenGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,19 +30,33 @@ final class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("", name="")
+     * @Route("", name="_choices", methods={"GET"})
+     */
+    public function choices(): Response
+    {
+        return $this->render('registration/choices.html.twig');
+    }
+
+    /**
+     * @Route("/{role}", name="")
      *
      * @return Response|RedirectResponse
      */
     public function register
     (
+        string $role,
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         TokenGenerator $tokenGenerator,
         EventDispatcherInterface $dispatcher
     )
     {
-        $user = new User();
+        if (!in_array($role, User::$roles, true)) {
+            $this->addFlash('danger', "Le role sélectionné n'éxiste pas");
+            return $this->redirectToRoute('app_register_choices');
+        }
+
+        $user = Company::ROLE === $role ? new Company() : new Particular();
 
         $form = $this->createForm(RegistrationFormType::class, $user)->handleRequest($request);
 

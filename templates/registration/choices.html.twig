@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="py-5">S'inscrire en tant que :</h1>
+        <div class="col-md-12">
+            <div class="d-flex justify-content-around align-items-center">
+                <a href="{{ path('app_register', { role: 'particular' }) }}" class="btn btn-primary">Particulier</a>
+                <a href="{{ path('app_register', { role: 'company' }) }}" class="btn btn-primary">Entreprise</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
