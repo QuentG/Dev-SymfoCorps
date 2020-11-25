@@ -2,12 +2,21 @@
 
 namespace App\EventListener;
 
+use App\Entity\Offer;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class EntityListener
 {
     private const CREATED_AT_FIELD = "createdAt";
     private const UPDATED_AT_FIELD = "updatedAt";
+
+    private SluggerInterface $slugger;
+
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
 
     public function prePersist(LifecycleEventArgs $args): void
     {
@@ -19,6 +28,10 @@ class EntityListener
 
         if (property_exists($entity, self::UPDATED_AT_FIELD)) {
             $entity->setUpdatedAt(new \DateTime());
+        }
+
+        if ($entity instanceof Offer) {
+            $entity->setSlug($this->slugger->slug($entity->getTitle()));
         }
     }
 
@@ -37,6 +50,10 @@ class EntityListener
 
         if (property_exists($entity, self::UPDATED_AT_FIELD)) {
             $entity->setUpdatedAt(new \DateTime());
+        }
+
+        if ($entity instanceof Offer) {
+            $entity->setSlug($this->slugger->slug($entity->getTitle()));
         }
     }
 

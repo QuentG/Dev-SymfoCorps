@@ -72,6 +72,7 @@ class AppFixtures extends Fixture
                 ->setActivity($this->fixturesUtils->getRandomItem(Offer::$activities))
                 ->setContractType($this->fixturesUtils->getRandomItem(Offer::$contractTypes))
                 ->setSalary($o < 20 ? null : $this->faker->numberBetween(15000, 40000))
+                ->setLocation($this->faker->city)
                 ->setStatus($this->fixturesUtils->getRandomItem(Offer::$statusTab))
             ;
 

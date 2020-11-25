@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ offer.title }}{% endblock %}
+
+{% block body %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1>{{ offer.title }}</h1>
+            <br />
+            <h5>Description de l'offre : </h5>
+            {{ offer.description|raw }}
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 class="mb-3">Informations</h2>
+        <table class="table table-striped">
+            <tr>
+                <td>Entreprise</td>
+                <td><a href="{{ path('home') }}">{{ offer.owner.companyName }}</a></td>
+            </tr>
+            <tr>
+                <td>Lieu</td>
+                <td><i class="fas fa-map-marker-alt mr-1"></i>{{ offer.location }}</td>
+            </tr>
+            <tr>
+                <td>Salaire par mois</td>
+                <td>{{ offer.salary ? offer.salary / 12 : '---' }}€</td>
+            </tr>
+            <tr>
+                <td>Salaire par an </td>
+                <td>{{ offer.salary ?? '---' }}€</td>
+            </tr>
+            <tr>
+                <td>Type de contrat</td>
+                <td><span class="badge badge-success">{{ offer.contractType }}</span></td>
+            </tr>
+        </table>
+
+        <div class="mt-4 text-right">
+            <a href="#" class="btn btn-primary">Postuler</a>
+        </div>
+    </div>
+{% endblock %}

@@ -19,7 +19,7 @@ class OfferRepository extends ServiceEntityRepository
         parent::__construct($registry, Offer::class);
     }
 
-    public function getPublish(int $limit = 3): array
+    public function getPublish(int $limit = null): array
     {
         return $this->createQueryBuilder('o')
             ->where('o.status = :status')

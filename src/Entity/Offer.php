@@ -69,6 +69,11 @@ class Offer
      */
     private Company $owner;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private string $location = '';
+
     public function getId(): ?int
     {
         return $this->id;
@@ -166,6 +171,18 @@ class Offer
     public function setOwner(Company $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getLocation(): string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(string $location): self
+    {
+        $this->location = $location;
 
         return $this;
     }

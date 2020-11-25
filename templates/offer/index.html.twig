@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les offres !{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="h1 my-5">Les dernières offres !</h1>
+        <div class="row">
+            {% for offer in offers %}
+                {% include 'offer/_offer.html.twig' %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

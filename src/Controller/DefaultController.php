@@ -15,7 +15,7 @@ final class DefaultController extends AbstractController
     public function index(OfferRepository $offerRepository): Response
     {
         return $this->render('home.html.twig', [
-            'offers' => $offerRepository->getPublish()
+            'offers' => $offerRepository->getPublish(3)
         ]);
     }
 }
