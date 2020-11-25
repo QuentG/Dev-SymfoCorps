@@ -1,0 +1,16 @@
+{% set user = app.user %}
+
+<div class="col-3 text-center">
+    <img src="{{ userImage(user) }}" class="mb-3" style="border-radius: 50%" height="auto" width="100%" alt="Avatar de {{ user.fullName }}">
+</div>
+
+<table class="table table-striped">
+    <tr>
+        <td>Prénom</td>
+        <td>{{ user.firstName }}</td>
+    </tr>
+    <tr>
+        <td>Nom</td>
+        <td>{{ user.lastName }}</td>
+    </tr>
+</table>

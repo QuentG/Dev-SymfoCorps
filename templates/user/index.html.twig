@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2 class="py-5">Mes informations</h2>
+        {% if is_granted('ROLE_PARTICULAR') %}
+            {% include 'user/particular/index.html.twig' %}
+        {% elseif is_granted('ROLE_COMPANY') %}
+            {% include 'user/company/index.html.twig' %}
+        {% endif %}
+
+        <a href="{{ path('account_edit') }}" class="btn btn-primary">Modifier mes informations</a>
+    </div>
+{% endblock %}

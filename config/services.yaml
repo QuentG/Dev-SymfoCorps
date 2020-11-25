@@ -1,9 +1,16 @@
 parameters:
+    defaultUserAvatar: '/img/user-default.svg'
+    uploadsRelativeDir: 'uploads/'
+    uploadsAbsoluteDir: '%kernel.project_dir%/public/%uploadsRelativeDir%'
 
 services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            string $defaultUserAvatar: '%defaultUserAvatar%'
+            string $uploadsRelativeDir: '%uploadsRelativeDir%'
+            string $uploadsAbsoluteDir: '%uploadsAbsoluteDir%'
 
     App\:
         resource: '../src/'

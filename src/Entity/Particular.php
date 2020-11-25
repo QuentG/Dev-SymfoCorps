@@ -21,6 +21,11 @@ class Particular extends User
      */
     private ?string $lastName = null;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $avatar = null;
+
     public function getRoles(): array
     {
         return ['ROLE_PARTICULAR'];
@@ -46,6 +51,23 @@ class Particular extends User
     public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?string $avatar): self
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }
