@@ -7,24 +7,35 @@
     <div class="collapse navbar-collapse" id="navbarColor02">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('offers_index') }}">Offres</a>
+                <a class="nav-link" href="{{ path('offers_index') }}">{{ 'navbar.offers'|trans }}</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdown" role="button">
+                    {{ app.request.locale }}
+                </a>
+                <div aria-labelledby="navbarDropdown" class="dropdown-menu">
+                    {% for locale in locales %}
+                        <a class="dropdown-item" href="{{ path('language_switch', { 'locale': locale }) }}">{{ locale }}</a>
+                    {% endfor %}
+                </div>
+            </li>
             {% if not app.user %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_register_choices') }}">Inscription</a>
+                    <a class="nav-link" href="{{ path('app_register_choices') }}">{{ 'navbar.register'|trans }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
+                    <a class="nav-link" href="{{ path('app_login') }}">{{ 'navbar.login'|trans }}</a>
                 </li>
             {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('account_index') }}">Profil</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
                 </li>
             {% endif %}
-            <li class="nav-item dropdown">
-            </li>
         </ul>
     </div>
 </nav>

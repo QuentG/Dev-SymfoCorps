@@ -1,4 +1,6 @@
 parameters:
+    locale: 'fr'
+    locales: [fr, en]
     defaultUserAvatar: '/img/user-default.svg'
     uploadsRelativeDir: 'uploads/'
     uploadsAbsoluteDir: '%kernel.project_dir%/public/%uploadsRelativeDir%'

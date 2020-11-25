@@ -20,7 +20,7 @@ class RegistrationFormType extends AbstractType
     {
         if ($options['data'] instanceof Company) {
             $builder->add('companyName', TextType::class, [
-                'label' => "Nom de l'entreprise"
+                'label' => "form.company_name"
             ]);
         }
 

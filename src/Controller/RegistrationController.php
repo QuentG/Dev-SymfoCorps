@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/register", name="app_register")
@@ -48,7 +49,8 @@ final class RegistrationController extends AbstractController
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         TokenGenerator $tokenGenerator,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        TranslatorInterface $translator
     )
     {
         if (!in_array($role, User::$roles, true)) {
@@ -75,10 +77,7 @@ final class RegistrationController extends AbstractController
 
             $dispatcher->dispatch(new UserCreatedEvent($user));
 
-            $this->addFlash(
-                'success',
-                'Un message avec un lien de confirmation vous a été envoyé par mail. Veuillez suivre ce lien pour activer votre compte.'
-            );
+            $this->addFlash('success', $translator->trans('flash.success_registration', [], 'flash'));
 
             return $this->redirectToRoute('app_login');
         }
