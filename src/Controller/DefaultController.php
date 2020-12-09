@@ -24,7 +24,7 @@ final class DefaultController extends AbstractController
     /**
      * @Route("/switch-language/{locale}", name="language_switch")
      */
-    public function switchLanguage(string $locale, Request $request)
+    public function switchLanguage(string $locale, Request $request): RedirectResponse
     {
         $request->getSession()->set('_locale', $locale);
         $referer = $request->headers->get('referer');

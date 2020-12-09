@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Client\GithubClient;
 use App\Form\UserAccountFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,9 +20,12 @@ class UserController extends AbstractController
     /**
      * @Route("", name="index")
      */
-    public function index(): Response
+    public function index(GithubClient $githubClient): Response
     {
-        return $this->render('user/index.html.twig');
+        return $this->render('user/index.html.twig', [
+            'git' => $githubClient->getMyInformations(),
+            'repos' => $githubClient->getMyRepositories()
+        ]);
     }
 
     /**

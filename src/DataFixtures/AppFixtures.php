@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Company;
 use App\Entity\Offer;
 use App\Entity\Particular;
+use App\Service\TokenGenerator;
 use App\Utils\FixturesUtils;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -19,15 +20,17 @@ class AppFixtures extends Fixture
     private UserPasswordEncoderInterface $encoder;
     private Generator $faker;
     private FixturesUtils $fixturesUtils;
+    private TokenGenerator $tokenGenerator;
 
     private array $users = [];
     private array $offers = [];
 
-    public function __construct(UserPasswordEncoderInterface $encoder, FixturesUtils $fixturesUtils)
+    public function __construct(UserPasswordEncoderInterface $encoder, FixturesUtils $fixturesUtils, TokenGenerator $tokenGenerator)
     {
         $this->encoder = $encoder;
         $this->faker = Factory::create('fr_FR');
         $this->fixturesUtils = $fixturesUtils;
+        $this->tokenGenerator = $tokenGenerator;
     }
 
     public function load(ObjectManager $manager): void
@@ -54,6 +57,8 @@ class AppFixtures extends Fixture
                     ->setFirstName($this->faker->firstName)
                     ->setLastName($this->faker->lastName);
             }
+
+            $this->tokenGenerator->generateAuthToken($user);
 
             $this->users[] = $user;
             $manager->persist($user);

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Traits\TimestampableTrait;
 use App\Repository\OfferRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=OfferRepository::class)
@@ -30,6 +31,7 @@ class Offer
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read_all"})
      */
     private string $title = '';
 
@@ -40,6 +42,7 @@ class Offer
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"read_all"})
      */
     private string $description = '';
 
@@ -71,6 +74,7 @@ class Offer
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read_all"})
      */
     private string $location = '';
 

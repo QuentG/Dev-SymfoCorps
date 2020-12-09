@@ -59,6 +59,21 @@ abstract class User implements UserInterface
      */
     protected ?string $resetPasswordToken = null;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private string $accessToken;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private string $refreshToken;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private \DateTime $expirationDate;
+
     public function isCompany(): bool
     {
         return $this instanceof Company;
@@ -157,5 +172,46 @@ abstract class User implements UserInterface
         $this->resetPasswordToken = $resetPasswordToken;
 
         return $this;
+    }
+
+    public function getAccessToken(): string
+    {
+        return $this->accessToken;
+    }
+
+    public function setAccessToken(string $accessToken): self
+    {
+        $this->accessToken = $accessToken;
+
+        return $this;
+    }
+
+    public function getRefreshToken(): string
+    {
+        return $this->refreshToken;
+    }
+
+    public function setRefreshToken(string $refreshToken): self
+    {
+        $this->refreshToken = $refreshToken;
+
+        return $this;
+    }
+
+    public function getExpirationDate(): \DateTime
+    {
+        return $this->expirationDate;
+    }
+
+    public function setExpirationDate(\DateTime $expirationDate): self
+    {
+        $this->expirationDate = $expirationDate;
+
+        return $this;
+    }
+
+    public function tokenIsValid(\DateTime $dateTime): bool
+    {
+        return $this->expirationDate > $dateTime;
     }
 }

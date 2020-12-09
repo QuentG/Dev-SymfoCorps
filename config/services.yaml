@@ -30,6 +30,11 @@ services:
         arguments:
             $from: '%env(MAILER_FROM)%'
 
+    App\Client\GithubClient:
+        arguments:
+            $url: '%env(GITHUB_API_BASE_URL)%'
+            $accessToken: '%env(GITHUB_ACCESS_TOKEN)%'
+
     App\EventListener\EntityListener:
         tags:
             - { name: doctrine.event_listener, event: prePersist }
